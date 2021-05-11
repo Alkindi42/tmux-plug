@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$CURRENT_DIR/src/constants.bash"
+source "$CURRENT_DIR/src/load_plugins.bash"
+source "$CURRENT_DIR/src/tplug_functions.bash"
+source "$CURRENT_DIR/src/plugin_function.bash"
+source "$CURRENT_DIR/src/shell_echo_functions.bash"
+
+_get_tmux_option() {
+	local option="$1"
+	local default_value="$2"
+	local option_value="$(tmux show-option -gqv "$option")"
+
+	if [ -z "$option_value" ]; then
+		echo "$default_value"
+	else
+		echo "$option_value"
+	fi
+}
+
+_set_tplug_key_bindings() {
+  local install_key="$(_get_tmux_option "$install_key_option" "$default_install_key")"
+	tmux bind-key "$install_key" run-shell "$CURRENT_DIR/src/bindings/install_plugins.bash"
+
+  local clean_key="$(_get_tmux_option "$clean_key_option" "$default_clean_key")"
+	tmux bind-key "$clean_key" run-shell "$CURRENT_DIR/src/bindings/clean_plugins.bash"
+
+  local update_key="$(_get_tmux_option "$update_key_option" "$default_update_key")"
+	tmux bind-key "$update_key" run-shell "$CURRENT_DIR/src/bindings/update_plugins.bash"
+}
+
+main() {
+  set_tplug_path
+  _set_tplug_key_bindings
+  load_plugins
+}
+
+main

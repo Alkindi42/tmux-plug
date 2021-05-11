@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+shopt -s nullglob 
+
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "$CURRENT_DIR/../src/shell_echo_functions.bash"
+
+source "$CURRENT_DIR/../src/install_plugins.bash"
+source "$CURRENT_DIR/../src/list_plugins.bash"
+source "$CURRENT_DIR/../src/update_plugins.bash"
+source "$CURRENT_DIR/../src/clean_plugins.bash"
+source "$CURRENT_DIR/../src/plugins_loading_time.bash"
+source "$CURRENT_DIR/../src/outdated_plugins.bash"
+
+usage() {
+  echo -e "Usage: tplug [COMMAND]\n"
+  echo "Commands:"
+  printf '%-10s %7s\n' "update" "update plugins"
+  printf '%-10s %10s\n' "list" "list plugins installed"
+  printf '%-10s %10s\n' "outdated" "list outdated plugins"
+  printf '%-10s %10s\n' "times" "display plugins loading time"
+  printf '%-10s %10s\n' "clean" "remove plugins missing from tmux configuration"
+  printf '%-10s %10s\n' "install" "install new plugins present in tmux configuration"
+}
+
+main() {
+  case "$1" in
+    install ) install_plugins ;;
+    update ) update_plugins ;;
+    clean ) clean_plugins ;;
+    times ) plugins_loading_time ;;
+    list ) list_plugins ;;
+    outdated ) outdated_plugins ;;
+    * ) usage ;;
+  esac
+}
+
+main "$@"
