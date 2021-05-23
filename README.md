@@ -125,3 +125,26 @@ By default tplug installs plugins in `$XDG_CONFIG_HOME/tmux/plugins`. You can ch
 ```bash
 set-environment -g TMUX_PLUGIN_MANAGER_PATH '/some/other/path/'
 ```
+
+### Display plugins loading time
+```bash
+$ tplug times
+   72 ms - tmux-plugins/tmux-open
+  600 ms - tmux-plugins/tmux-copycat
+  231 ms - tmux-plugins/tmux-yank
+   81 ms - tmux-plugins/tmux-resurrect
+   28 ms - Alkindi42/tmux-bitwarden
+```
+
+### Disable all default key bindings
+Add this line in your `.tmux.conf`:
+```
+set -g @tplug-disable-key-bindings 'on'
+```
+
+Default: `off`
+
+### Add `tplug` into your shell
+```bash
+export PATH="$PATH:$HOME/.tmux/plugins/tmux-plug/bin"
+```
