@@ -25,23 +25,23 @@ _set_tplug_key_bindings() {
   local clean_key
   local update_key
 
-  key_bindings=$(_get_tmux_option "@tplug-disable-key-bindings" "off")
+  install_key="$(_get_tmux_option "$install_key_option" "$default_install_key")"
+  tmux bind-key "$install_key" run-shell "$CURRENT_DIR/src/bindings/install_plugins.bash"
 
-  if [ "$key_bindings" = "off"  ]; then
-    install_key="$(_get_tmux_option "$install_key_option" "$default_install_key")"
-    tmux bind-key "$install_key" run-shell "$CURRENT_DIR/src/bindings/install_plugins.bash"
+  clean_key="$(_get_tmux_option "$clean_key_option" "$default_clean_key")"
+  tmux bind-key "$clean_key" run-shell "$CURRENT_DIR/src/bindings/clean_plugins.bash"
 
-    clean_key="$(_get_tmux_option "$clean_key_option" "$default_clean_key")"
-    tmux bind-key "$clean_key" run-shell "$CURRENT_DIR/src/bindings/clean_plugins.bash"
-
-    update_key="$(_get_tmux_option "$update_key_option" "$default_update_key")"
-    tmux bind-key "$update_key" run-shell "$CURRENT_DIR/src/bindings/update_plugins.bash"
-  fi
+  update_key="$(_get_tmux_option "$update_key_option" "$default_update_key")"
+  tmux bind-key "$update_key" run-shell "$CURRENT_DIR/src/bindings/update_plugins.bash"
 }
 
 main() {
   set_tplug_path
-  _set_tplug_key_bindings
+
+  disable_key_bindings=$(_get_tmux_option "@tplug-disable-key-bindings" "off")
+  if [ "$disable_key_bindings" = "off"  ]; then
+    _set_tplug_key_bindings
+  fi
   load_plugins
 }
 

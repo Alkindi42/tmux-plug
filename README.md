@@ -137,7 +137,7 @@ $ tplug times
 ```
 
 ### Disable all default key bindings
-Add this line in your `.tmux.conf`:
+Add this line in your `.tmux.conf` (before plugins initialization):
 ```
 set -g @tplug-disable-key-bindings 'on'
 ```

@@ -16,8 +16,7 @@ _load_plugin_silently() {
 load_plugins() {
   local plugin
 
-  for plugin in $(get_plugins)
-  do
+  for plugin in $(get_plugins_from_conf); do
     _load_plugin_silently "$(get_path_to_plugin "$plugin")"
   done
 }
